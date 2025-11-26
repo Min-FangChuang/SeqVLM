@@ -22,11 +22,11 @@ class AdpativePredictor:
         self.max_batch_size = kwargs.get('max_batch_size')
         self.max_vlm_props = kwargs.get('max_vlm_props')
         
-        self.prog_inter = ProgramInterpreter()
+        #self.prog_inter = ProgramInterpreter()
         self.handler = VisualFeatHandler.get_instance()
 
     
-    def execute(self, scene_id, obj_name, caption, prog_str):
+    def execute(self, scene_id, obj_name, caption):
         ins_labels, ins_locs, ins_scores, _ = load_seg_inst(scene_id)
         pred_cls = self.handler.predict_obj_class(obj_name, ins_labels)
         
@@ -35,8 +35,8 @@ class AdpativePredictor:
         seg_conf_score = 0.2
         
         for i, label in enumerate(ins_labels):
-            # if ins_scores[i] > seg_conf_score and label == pred_cls:
-            if label == pred_cls:
+             if ins_scores[i] > seg_conf_score and label == pred_cls:
+            #if label == pred_cls:
                 canvas = os.path.join(self.image_path, scene_id, str(i), 'canvas.jpg')
                 if os.path.exists(canvas):
                     index.append(i)
@@ -50,13 +50,6 @@ class AdpativePredictor:
             if pred is not None:
                 return ins_locs[index[pred]], True
 
-        try:
-            init_state = {'scene_id': scene_id}
-            result = self.prog_inter.execute(prog_str, init_state)
-            if result:
-                return result[0]['obj_loc'], False
-        except Exception as e:
-            print(Fore.RED + f'Except: {e}')
             
         return None, False
 
