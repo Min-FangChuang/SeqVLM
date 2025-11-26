@@ -5,6 +5,7 @@ import random
 from objprint import op
 from colorama import Fore, init
 init(autoreset=True)
+from PIL import Image
 
 from prompts.prompt import *
 from utils import *
@@ -48,6 +49,14 @@ class AdpativePredictor:
         if n_props <= self.max_vlm_props:
             pred = self.predict(prop_images, caption)
             if pred is not None:
+                print('Predict:', prop_images[pred])
+                try:
+                    img = Image.open(prop_images[pred])
+                    img.show()
+                except FileNotFoundError:
+                    print(f"Error: image can't find {prop_images[pred]}.")
+                except Exception as e:
+                    print(f"開啟圖片時發生錯誤：{e}")
                 return ins_locs[index[pred]], True
 
             

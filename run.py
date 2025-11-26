@@ -47,7 +47,10 @@ if __name__ == '__main__':
 
 
     pred_box, use_vlm = predictor.execute(scene_id, obj_name, caption)
-
+    print("Pre_box")
+    print('center(x,y,z):',pred_box[:3])
+    print('size(x,y,z):',pred_box[3:])
+    
     end_time = time.time()
     cpu_end = process.cpu_times()
     mem_end = process.memory_info().rss / (1024 * 1024)  # MB
