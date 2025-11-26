@@ -56,7 +56,7 @@ class AdpativePredictor:
                 except FileNotFoundError:
                     print(f"Error: image can't find {prop_images[pred]}.")
                 except Exception as e:
-                    print(f"開啟圖片時發生錯誤：{e}")
+                    print(f"image open fail：{e}")
                 return ins_locs[index[pred]], True
 
             
